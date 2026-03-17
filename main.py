@@ -1,6 +1,6 @@
 import tkinter as tk
 
-history = []
+formulas = []
 
 
 def convert():
@@ -27,12 +27,34 @@ def convert():
 
         result_label.config(text=f"Ergebnis: {result:.4f}")
 
-        # Historie hinzufügen
-        history.append(f"{value} {from_unit} -> {result:.4f} {to_unit}")
-        history[:] = history[-10:]  # Behalte nur die letzten 10
-        listbox.delete(0, tk.END)
-        for item in history:
-            listbox.insert(tk.END, item)
+        # Formel berechnen und zur Liste hinzufügen
+        if value != 0:
+            # Schritte anzeigen
+            if from_unit != "Meter":
+                formulas.append(f"{from_unit} --> Meter")
+                if from_unit == "Kilometer":
+                    factor1 = 1000
+                elif from_unit == "Zentimeter":
+                    factor1 = 0.01
+                formulas.append(f"meter = {from_unit.lower()} * {factor1}")
+                formulas.append(f"eingesetzt: meter = {value} * {factor1} = {meters}")
+
+            if to_unit != "Meter":
+                formulas.append(f"Meter --> {to_unit}")
+                if to_unit == "Kilometer":
+                    factor2 = 0.001
+                elif to_unit == "Zentimeter":
+                    factor2 = 100
+                formulas.append(f"{to_unit.lower()} = meter * {factor2}")
+                formulas.append(f"eingesetzt: {to_unit.lower()} = {meters} * {factor2} = {result}")
+
+            formulas[:] = formulas[-30:]  # Behalte nur die letzten 30 (für mehr Einträge)
+            listbox.delete(0, tk.END)
+            for item in formulas:
+                listbox.insert(tk.END, item)
+        else:
+            # Optional: Fehlermeldung in Listbox
+            pass
 
     except ValueError:
         result_label.config(text="Bitte eine gültige Zahl eingeben")
@@ -74,9 +96,9 @@ convert_button.pack(pady=10)
 result_label = tk.Label(left_frame, text="Ergebnis:")
 result_label.pack()
 
-# Listbox für Historie
-tk.Label(right_frame, text="Letzte Umrechnungen:").pack(pady=5)
-listbox = tk.Listbox(right_frame, height=15)
+# Listbox für Formeln
+tk.Label(right_frame, text="Angewendete Formeln:").pack(pady=5)
+listbox = tk.Listbox(right_frame, height=15, width=40)
 listbox.pack(pady=5)
 
 root.mainloop()
