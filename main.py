@@ -50,18 +50,18 @@ def convert():
                 formulas.append(f"eingesetzt: {to_unit.lower()} = {meters} * {factor2} = {result}")
 
             formulas[:] = formulas[-30:]  # Behalte nur die letzten 30 (für mehr Einträge)
-            listbox.delete(0, tk.END)
+            listbox_formulas.delete(0, tk.END)
             for item in formulas:
-                listbox.insert(tk.END, item)
+                listbox_formulas.insert(tk.END, item)
         else:
             # Optional: Fehlermeldung in Listbox
             pass
         # Historie hinzufügen
         history.append(f"{value} {from_unit} -> {result:.4f} {to_unit}")
         history[:] = history[-10:]  # Behalte nur die letzten 10
-        listbox.delete(0, tk.END)
+        listbox_history.delete(0, tk.END)
         for item in history:
-            listbox.insert(tk.END, item)
+            listbox_history.insert(tk.END, item)
 
     except ValueError:
         result_label.config(text="Bitte eine gültige Zahl eingeben")
@@ -69,7 +69,7 @@ def convert():
 
 root = tk.Tk()
 root.title("Einheitenumrechner")
-root.geometry("600x300")  # Breite erhöht für Layout
+root.geometry("700x400")  # Breite und Höhe erhöht für Layout
 
 # Frames für Layout
 left_frame = tk.Frame(root)
@@ -105,9 +105,12 @@ result_label.pack()
 
 # Listbox für Historie
 tk.Label(right_frame, text="Letzte Umrechnungen:").pack(pady=5)
+listbox_history = tk.Listbox(right_frame, height=10, width=50)
+listbox_history.pack(pady=5)
+
 # Listbox für Formeln
 tk.Label(right_frame, text="Angewendete Formeln:").pack(pady=5)
-listbox = tk.Listbox(right_frame, height=15, width=40)
-listbox.pack(pady=5)
+listbox_formulas = tk.Listbox(right_frame, height=10, width=50)
+listbox_formulas.pack(pady=5)
 
 root.mainloop()
