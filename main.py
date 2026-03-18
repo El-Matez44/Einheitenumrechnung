@@ -1,6 +1,7 @@
 import tkinter as tk
 
 formulas = []
+history = []
 
 
 def convert():
@@ -55,6 +56,12 @@ def convert():
         else:
             # Optional: Fehlermeldung in Listbox
             pass
+        # Historie hinzufügen
+        history.append(f"{value} {from_unit} -> {result:.4f} {to_unit}")
+        history[:] = history[-10:]  # Behalte nur die letzten 10
+        listbox.delete(0, tk.END)
+        for item in history:
+            listbox.insert(tk.END, item)
 
     except ValueError:
         result_label.config(text="Bitte eine gültige Zahl eingeben")
@@ -96,6 +103,8 @@ convert_button.pack(pady=10)
 result_label = tk.Label(left_frame, text="Ergebnis:")
 result_label.pack()
 
+# Listbox für Historie
+tk.Label(right_frame, text="Letzte Umrechnungen:").pack(pady=5)
 # Listbox für Formeln
 tk.Label(right_frame, text="Angewendete Formeln:").pack(pady=5)
 listbox = tk.Listbox(right_frame, height=15, width=40)
