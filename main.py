@@ -76,7 +76,7 @@ result_label.pack()
 
 # Listbox für Historie
 tk.Label(right_frame, text="Letzte Umrechnungen:").pack(pady=5)
-listbox = tk.Listbox(right_frame, height=15)
+listbox = tk.Listbox(right_frame, height=15, width=40)
 listbox.pack(pady=5)
 
 root.mainloop()
